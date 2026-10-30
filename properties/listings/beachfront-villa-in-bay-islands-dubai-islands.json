@@ -2,11 +2,12 @@
   "title": "Beachfront Villa in Bay Islands, Dubai Islands",
   "slug": "villa-bayvillas-dubai-island",
   "category": "Sale",
+  "website_section": "Stunning Villas",
   "location": "Dubai Islands",
   "community": "Bay Villas",
-  "price": 56000000,
-  "bedrooms": 6,
-  "bathrooms": 7,
+  "price": "56,000,000",
+  "bedrooms": "6",
+  "bathrooms": "7",
   "status": "Available",
   "featured": false
 }
