@@ -1,1 +1,104 @@
+media:
+  - name: property_images  
+    label: Property Images 
+    input: images
+    output: /images
+    extensions:
+      - jpg
+      - jpeg
+      - png
+      - webp
+    categories:
+      - image
+    rename: safe
 
+content:
+  - name: listings
+    label: Property Listings
+    type: collection
+    path: properties/listings
+    exclude:
+      - README.md
+    format: json
+    filename: "{slug}.json"
+    fields:
+      - name: title
+        label: Property Title
+        type: string
+        required: true
+
+      - name: slug
+        label: Property URL Name
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+
+      - name: category
+        label: Property Category
+        type: select
+        options:
+          values:
+            - Sale
+            - Rent
+            - Off-plan
+            - Secondary market
+            - Land and plots
+            - Buildings, hotels and commercial
+
+      - name: location
+        label: Location
+        type: string
+
+      - name: community
+        label: Community or Building
+        type: string
+
+      - name: price
+        label: Price in AED
+        type: number
+
+      - name: bedrooms
+        label: Bedrooms
+        type: number
+
+      - name: bathrooms
+        label: Bathrooms
+        type: number
+
+      - name: size
+        label: Size in sqft
+        type: number
+
+      - name: description
+        label: Property Description
+        type: rich-text
+        options:
+          media: false
+
+      - name: cover
+        label: Main Property Photo
+        type: image
+        options:
+          media: property_images
+
+      - name: gallery
+        label: Additional Photos
+        type: image
+        options:
+          media: property_images
+          multiple:
+            max: 20
+
+      - name: status
+        label: Property Status
+        type: select
+        options:
+          values:
+            - Available
+            - Reserved
+            - Sold
+            - Rented
+
+      - name: featured
+        label: Feature on Website
+        type: boolean
