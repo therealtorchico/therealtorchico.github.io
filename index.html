@@ -276,5 +276,79 @@
     document.getElementById("year").textContent =
       new Date().getFullYear();
   </script>
+  <section id="chico-properties" style="max-width:1200px;margin:60px auto;padding:24px;">
+  <h2>Featured Properties</h2>
+  <div id="chico-property-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+    <p>Loading properties...</p>
+  </div>
+</section>
+
+<script>
+async function loadChicoProperties() {
+  const list = document.getElementById("chico-property-list");
+
+  const files = [
+    "Beachfront-Villa-in-Dubai%20island.json"
+  ];
+
+  list.innerHTML = "";
+
+  for (const file of files) {
+    try {
+      const response = await fetch(
+        "./properties/listings/" + file
+      );
+
+      if (!response.ok) {
+        throw new Error("Property file not found");
+      }
+
+      const property = await response.json();
+
+      const card = document.createElement("article");
+      card.style.cssText =
+        "border:1px solid #ddd;border-radius:12px;overflow:hidden;padding-bottom:18px;";
+
+      const title = document.createElement("h3");
+      title.textContent = property.title || "Property";
+
+      const category = document.createElement("p");
+      category.textContent = property.category || "";
+
+      const location = document.createElement("p");
+      location.textContent = property.location || "";
+
+      const price = document.createElement("p");
+      price.textContent = property.price
+        ? "AED " + Number(property.price).toLocaleString("en-US")
+        : "";
+
+      const description = document.createElement("p");
+      description.textContent = property.description || "";
+
+      if (property.cover) {
+        const photo = document.createElement("img");
+        photo.src = property.cover.startsWith("/")
+          ? property.cover
+          : "./" + property.cover;
+        photo.alt = property.title || "Property photo";
+        photo.style.cssText =
+          "width:100%;height:220px;object-fit:cover;";
+        card.appendChild(photo);
+      }
+
+      card.append(title, category, location, price, description);
+      list.appendChild(card);
+
+    } catch (error) {
+      list.innerHTML =
+        "<p>We could not load the property. Please check the listing file.</p>";
+      console.error(error);
+    }
+  }
+}
+
+loadChicoProperties();
+</script>
 </body>
 </html>
