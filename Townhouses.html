@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Townhouses in Dubai | The Realtor Chico</title>
-  <meta name="description" content="Explore selected Off Plan properties and new developments in Dubai with The Realtor Chico.">
+  <meta name="description" content="Explore selected townhouses in Dubai with The Realtor Chico.">
 
   <style>
     body {
@@ -87,8 +87,8 @@
 </header>
 
 <section class="intro">
-  <h1>Off Plan</h1>
-  <p>Discover selected developments and investment opportunities across Dubai.</p>
+  <h1>Townhouses</h1>
+  <p>Explore selected Townhouses in Dubai.</p>
 </section>
 
 <section class="properties" id="properties">
@@ -96,7 +96,7 @@
 </section>
 
 <script>
-async function loadOffPlan() {
+async function loadTownhouses() {
   const container = document.getElementById("properties");
 
   try {
@@ -118,19 +118,19 @@ async function loadOffPlan() {
       })
     );
 
-    const OffPlan = results.filter(property =>
-      property.website_section === "Off Plan"
+    const Townhouses = results.filter(property =>
+      property.website_section === "Townhouses"
     );
 
     container.innerHTML = "";
 
-    if (!OffPlan.length) {
+    if (!OTownhouses.length) {
       container.innerHTML =
-        '<p class="empty">New Off plan listings coming soon.</p>';
+        '<p class="empty">New Townhouse listings coming soon.</p>';
       return;
     }
 
-    OffPlan.forEach(property => {
+    Townhouses.forEach(property => {
       const card = document.createElement("article");
       card.className = "property";
 
@@ -155,7 +155,7 @@ async function loadOffPlan() {
   }
 }
 
-loadOffPlan();
+loadTownhouses();
 </script>
 
 </body>
