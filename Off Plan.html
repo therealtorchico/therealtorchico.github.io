@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Off-Plan Properties in Dubai | The Realtor Chico</title>
-  <meta name="description" content="Explore selected off-plan properties and new developments in Dubai with The Realtor Chico.">
+  <title>Off Plan Properties in Dubai | The Realtor Chico</title>
+  <meta name="description" content="Explore selected Off Plan properties and new developments in Dubai with The Realtor Chico.">
 
   <style>
     body {
@@ -87,7 +87,7 @@
 </header>
 
 <section class="intro">
-  <h1>Off-Plan Properties</h1>
+  <h1>Off Plan</h1>
   <p>Discover selected developments and investment opportunities across Dubai.</p>
 </section>
 
@@ -107,6 +107,7 @@ async function loadOffPlan() {
     if (!response.ok) throw new Error("Could not load listings");
 
     const files = await response.json();
+
     const listings = files.filter(file => file.name.endsWith(".json"));
 
     const results = await Promise.all(
@@ -117,19 +118,19 @@ async function loadOffPlan() {
       })
     );
 
-    const offPlan = results.filter(property =>
-      property.website_section === "Off-Plan"
+    const OffPlan = results.filter(property =>
+      property.website_section === "Off Plan"
     );
 
     container.innerHTML = "";
 
-    if (!offPlan.length) {
+    if (!OffPlan.length) {
       container.innerHTML =
-        '<p class="empty">New off-plan listings coming soon.</p>';
+        '<p class="empty">New Off plan listings coming soon.</p>';
       return;
     }
 
-    offPlan.forEach(property => {
+    OffPlan.forEach(property => {
       const card = document.createElement("article");
       card.className = "property";
 
