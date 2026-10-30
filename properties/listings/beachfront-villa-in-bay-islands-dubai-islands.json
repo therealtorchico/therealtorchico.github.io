@@ -7,5 +7,6 @@
   "price": 56000000,
   "bedrooms": 6,
   "bathrooms": 7,
+  "status": "Available",
   "featured": false
 }
