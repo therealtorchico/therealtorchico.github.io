@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxury Townhouses in Dubai | The Realtor Chico</title>
+  <meta name="description" content="Explore selected townhouses in Dubai with The Realtor Chico.">
+  <style>
+    body {
+      margin: 0;
+      background: #101010;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 28px 7%;
+      border-bottom: 1px solid #333;
+    }
+    header a { color: #fff; text-decoration: none; }
+    .intro { padding: 55px 7% 25px; }
+    .intro h1 { font-size: 38px; }
+    .intro p { color: #aaa; }
+    .properties {
+      padding: 20px 7% 70px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+    .property {
+      background: #1b1b1b;
+      border: 1px solid #333;
+      overflow: hidden;
+    }
+    .property img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+    }
+    .details { padding: 18px; }
+    .details h2 { font-size: 20px; }
+    .details p { color: #aaa; line-height: 1.5; }
+    .price { color: #d6bd91 !important; font-size: 20px; }
+    .empty { color: #aaa; grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← THE REALTOR CHICO</a>
+</header>
+
+<section class="intro">
+  <h1>Townhouses</h1>
+  <p>Explore exceptional family homes across Dubai.</p>
+</section>
+
+<section class="properties" id="properties">
+  <p class="empty">Loading properties...</p>
+</section>
+
+<script>
+async function loadTownhouses() {
+  const container = document.getElementById("properties");
+
+  try {
+    const response = await fetch("https://api.github.com/repos/therealtorchico/therealtorchico.github.io/contents/properties/listings");
+    if (!response.ok) throw new Error("Could not load listings");
+
+    const files = await response.json();
+    const listings = files.filter(file => file.name.endsWith(".json"));
+
+    const results = await Promise.all(
+      listings.map(async file => {
+        const res = await fetch(file.download_url);
+        return res.json();
+      })
+    );
+
+    const townhouses = results.filter(property =>
+      property.website_section === "Townhouses"
+    );
+
+    container.innerHTML = "";
+
+    if (!townhouses.length) {
+      container.innerHTML = '<p class="empty">New townhouse listings coming soon.</p>';
+      return;
+    }
+
+    townhouses.forEach(property => {
+      const card = document.createElement("article");
+      card.className = "property";
+
+      card.innerHTML = `
+        <img src="${property.cover_image || ""}" alt="">
+        <div class="details">
+          <h2>${property.title || ""}</h2>
+          <p>${property.location || ""}</p>
+          <p class="price">${property.price || ""}</p>
+          <p>${property.bedrooms || ""} Bedrooms · ${property.size || ""}</p>
+          <p>${property.description || ""}</p>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    container.innerHTML = '<p class="empty">Properties could not be loaded. Please try again later.</p>';
+    console.error(error);
+  }
+}
+
+loadTownhouses();
+</script>
+
+</body>
+</html>
 
