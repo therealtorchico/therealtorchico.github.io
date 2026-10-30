@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Plots and Commercials | The Realtor Chico</title>
-  <meta name="description" content="Explore selected land plots, investment buildings, hotels and commercial properties in UAE with The Realtor Chico.">
+  <title>Plots and Commercial Properties in Dubai | The Realtor Chico</title>
+  <meta name="description" content="Discuss land, buildings and investment opportunities with The Realtor Chico.">
 
   <style>
     body {
@@ -34,7 +34,6 @@
 
     .intro p {
       color: #aaa;
-      line-height: 1.6;
     }
 
     .properties {
@@ -89,10 +88,7 @@
 
 <section class="intro">
   <h1>Plots and Commercials</h1>
-  <p>
-    Explore selected land opportunities, development plots,
-    investment buildings, hotels and commercial properties across Dubai.
-  </p>
+  <p>Discuss land, buildings and investment opportunities in UAE</p>
 </section>
 
 <section class="properties" id="properties">
@@ -100,7 +96,7 @@
 </section>
 
 <script>
-async function loadPPlotsandCommercials() {
+async function loadPlotsandCommercials() {
   const container = document.getElementById("properties");
 
   try {
@@ -108,76 +104,53 @@ async function loadPPlotsandCommercials() {
       "https://api.github.com/repos/therealtorchico/therealtorchico.github.io/contents/properties/listings"
     );
 
-    if (!response.ok) {
-      throw new Error("Could not load listings");
-    }
+    if (!response.ok) throw new Error("Could not load listings");
 
     const files = await response.json();
 
-    const listings = files.filter(file =>
-      file.name.endsWith(".json")
-    );
+    const listings = files.filter(file => file.name.endsWith(".json"));
 
     const results = await Promise.all(
       listings.map(async file => {
         const res = await fetch(file.download_url);
-
-        if (!res.ok) {
-          throw new Error("Could not read property");
-        }
-
+        if (!res.ok) throw new Error("Could not read property");
         return res.json();
       })
     );
 
-    const properties = results.filter(property =>
+    const PlotsandCommercials = results.filter(property =>
       property.website_section === "Plots and Commercials"
     );
 
     container.innerHTML = "";
 
-    if (!properties.length) {
+    if (!PlotsandCommercials.length) {
       container.innerHTML =
-        '<p class="empty">New plots and commercial listings coming soon.</p>';
+        '<p class="empty">New Plots and Commercial listings coming soon.</p>';
       return;
     }
 
-    properties.forEach(property => {
+    PlotsandCommercials.forEach(property => {
       const card = document.createElement("article");
       card.className = "property";
 
-      const image = document.createElement("img");
-      image.src = property.cover_image || "";
-      image.alt = property.title || "Property image";
+      card.innerHTML = `
+        <img src="${property.cover_image || ""}" alt="">
+        <div class="details">
+          <h2>${property.title || ""}</h2>
+          <p>${property.location || ""}</p>
+          <p class="price">${property.price || ""}</p>
+          <p>${property.bedrooms || ""} Bedrooms · ${property.size || ""}</p>
+          <p>${property.description || ""}</p>
+        </div>
+      `;
 
-      const details = document.createElement("div");
-      details.className = "details";
-
-      const title = document.createElement("h2");
-      title.textContent = property.title || "";
-
-      const location = document.createElement("p");
-      location.textContent = property.location || "";
-
-      const price = document.createElement("p");
-      price.className = "price";
-      price.textContent = property.price || "";
-
-      const size = document.createElement("p");
-      size.textContent = property.size || "";
-
-      const description = document.createElement("p");
-      description.textContent = property.description || "";
-
-      details.append(title, location, price, size, description);
-      card.append(image, details);
       container.appendChild(card);
     });
 
   } catch (error) {
     container.innerHTML =
       '<p class="empty">Properties could not be loaded. Please try again later.</p>';
-
     console.error(error);
   }
 }
